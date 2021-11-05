@@ -1,0 +1,20 @@
+{
+    "extensions": {
+
+    },
+    "folders": [{
+        "name": "nmfx",
+        "path": "./src/nfmx"
+    },
+    {
+        "name": "settings",
+        "path": "./src/settings"
+    },
+    {
+        "name": "templates",
+        "path": "./src/templates"
+    }],
+    "settings": {
+
+    }
+}
