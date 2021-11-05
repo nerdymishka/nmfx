@@ -1,2 +1,1 @@
-# nmfx
-nerdy mishka framwork
+# Nerdy Mishka Framework
