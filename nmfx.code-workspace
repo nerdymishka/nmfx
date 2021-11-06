@@ -4,7 +4,7 @@
     },
     "folders": [{
         "name": "nmfx",
-        "path": "./src/nfmx"
+        "path": "./src/nmfx"
     },
     {
         "name": "settings",
@@ -15,6 +15,18 @@
         "path": "./src/templates"
     }],
     "settings": {
+        "cSpell.words": [
+            "Herndon",
+            "Xunit",
+            "markdownlint"
+        ],
+        "editor.rulers": [80, 120],
+        "markdownlint.config": {
+            "MD028": false,
+            "MD025": {
+                "front_matter_title": ""
+            }
+        }
 
     }
 }

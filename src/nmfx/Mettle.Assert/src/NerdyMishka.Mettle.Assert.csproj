@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(DotNetLibraryFrameworks)</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Mettle</RootNamespace>
+  </PropertyGroup> 
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0|netstandard2.1|net5'">
+    <DefineConstants>NETSTANDARD;TRACE;XUNIT_FRAMEWORK</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.1'">
+    <DefineConstants>$(DefineConstants);VALUETASK</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.assert" Version="2.4.1" />
+    <PackageReference Include="System.Memory" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Internal\src\System\Diagnostics\CodeAnalysis\NullableAttributes.cs" Link="NullableAttributes.cs" />
+  </ItemGroup>
+</Project>
