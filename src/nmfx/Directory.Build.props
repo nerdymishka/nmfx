@@ -9,9 +9,9 @@
     <!-- enabled for .netstandard2.1/netcoreapp3.1 -->
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <AnalysisLevel>latest</AnalysisLevel>
-    <DotNetLibraryFrameworks>netstandard2.0;netstandard2.1;net472</DotNetLibraryFrameworks>
+    <DotNetLibraryFrameworks>netstandard2.0;netstandard2.1;</DotNetLibraryFrameworks>
     <DotNetAppFrameworks>net6</DotNetAppFrameworks>
-    <DotNetTestFrameworks>netcoreapp2.1;net472;net6</DotNetTestFrameworks>
+    <DotNetTestFrameworks>netcoreapp3.1;net472;net6</DotNetTestFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <RunAnalyzersDuringLiveAnalysis Condition="'$(Configuration)' == 'Release'">false</RunAnalyzersDuringLiveAnalysis>
     <LangVersion>9.0</LangVersion>

@@ -1,8 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>$(DotNetLibraryFrameworks)</TargetFrameworks>
+    <TargetFrameworks>$(DotNetLibraryFrameworks);</TargetFrameworks>
     <Nullable>enable</Nullable>
-    <LangVersion>8.0</LangVersion>
+    <RootNamespace>Mettle</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.core" Version="2.4.1" />
+    <PackageReference Include="System.Memory" Version="*" />
+    <PackageReference Include="Nuget.Frameworks" Version="*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Internal\src\System\Diagnostics\CodeAnalysis\NullableAttributes.cs" Link="NullableAttributes.cs" />
+    <Compile Include="..\..\Mettle.Assert\src\Sdk\DynamicSkipToken.cs" Link="DynamicSkipToken.cs" />
+  </ItemGroup>
 </Project>
