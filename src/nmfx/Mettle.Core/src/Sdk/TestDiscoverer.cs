@@ -25,7 +25,7 @@ namespace Mettle.Sdk
             if (!string.IsNullOrWhiteSpace(category))
                 traits.Add("Category", category);
 
-            if (tags != null && tags.Length > 0)
+            if (tags is { Length: > 0 })
             {
                 foreach (var tag in tags)
                 {
@@ -51,12 +51,14 @@ namespace Mettle.Sdk
             var sb = new StringBuilder();
             foreach (var kvp in SkippableTraitAttribute.SkippableTraits)
             {
-                var attr = testMethod
-                    .Method
-                    .GetCustomAttributes(typeof(RequireOsPlatformsAttribute))
-                    as SkippableTraitAttribute;
+                var ai = testMethod.Method.GetCustomAttributes(kvp.Value);
 
-                if (attr is null)
+                if (ai is not ReflectionAttributeInfo reflect)
+                {
+                    continue;
+                }
+
+                if (reflect.Attribute is not SkippableTraitAttribute attr)
                     continue;
 
                 var nextReason = attr.GetSkipReason(this.DiagnosticMessageSink, testMethod, factAttribute);

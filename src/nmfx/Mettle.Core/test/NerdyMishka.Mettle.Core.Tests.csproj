@@ -20,4 +20,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mettle.Assert\src\NerdyMishka.Mettle.Assert.csproj" />
+    <ProjectReference Include="..\src\NerdyMishka.Mettle.Core.csproj" />
+  </ItemGroup>
+
 </Project>
