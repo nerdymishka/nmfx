@@ -22,4 +22,12 @@
     <Compile Include="..\..\Internal\src\System\Diagnostics\CodeAnalysis\NullableAttributes.cs" Link="NullableAttributes.cs" />
     <Compile Include="..\..\Mettle.Assert\src\Sdk\DynamicSkipToken.cs" Link="DynamicSkipToken.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mettle.Assert\src\NerdyMishka.Mettle.Assert.csproj" />
+  </ItemGroup>
 </Project>

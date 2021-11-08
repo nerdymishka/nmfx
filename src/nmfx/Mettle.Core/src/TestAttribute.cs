@@ -5,8 +5,9 @@ using Xunit.Sdk;
 namespace Mettle
 {
     /// <summary>
-    /// Abstract class for test case attributes that is derviced from the
-    /// <see cref="FactAttribute"/>.
+    /// Core test attribute that is derived from the
+    /// <see cref="FactAttribute"/> and is the base class for mettle
+    /// test case attributes.
     /// </summary>
     [AttributeUsage(
         AttributeTargets.Method,
@@ -14,9 +15,21 @@ namespace Mettle
     [XunitTestCaseDiscoverer(Util.TestCaseDiscoverer, Util.AssemblyName)]
     public class TestAttribute : FactAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestAttribute"/> class.
+        /// </summary>
         public TestAttribute()
+            : this("test")
         {
-            this.Category = "test";
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestAttribute"/> class.
+        /// </summary>
+        /// <param name="categoryName">The category of the test.</param>
+        protected TestAttribute(string categoryName)
+        {
+            this.Category = categoryName;
         }
 
         /// <summary>
@@ -60,11 +73,14 @@ namespace Mettle
         /// </summary>
         /// <value>
         /// Property <see cref="Tags" /> represents additional tags that stored as an
-        /// xunit trait with the key 'tag'.  Traits can be used to filter
+        /// Xunit trait with the key 'tag'.  Traits can be used to filter
         /// which tests are executed at runtime.
         /// </value>
         public string[]? Tags { get; set; }
 
+        /// <summary>
+        /// Gets or sets the category.
+        /// </summary>
         protected internal string? Category { get; set; }
     }
 }
