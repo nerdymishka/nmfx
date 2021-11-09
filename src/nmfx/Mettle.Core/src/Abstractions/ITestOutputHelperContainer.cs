@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit.Abstractions;
 
-namespace Mettle.Sdk
+namespace Mettle.Abstractions
 {
     public interface ITestOutputHelperContainer
     {

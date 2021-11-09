@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Mettle.Abstractions;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -13,9 +14,11 @@ namespace Mettle.Sdk
     /// The Mettle test case runner for xUnit.net v2 tests. The test case runner
     /// creates and invokes the <see cref="MettleTestRunner"/>.
     /// </summary>
-    public class MettleTestCaseRunner : XunitTestCaseRunner
+    public class MettleTestCaseRunner : XunitTestCaseRunner, IDisposable
     {
         private readonly IServiceProvider? serviceProvider;
+
+        private readonly IDisposable? scope;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MettleTestCaseRunner" /> class.
@@ -54,6 +57,15 @@ namespace Mettle.Sdk
             this.TestClass = this.TestCase.TestMethod.TestClass.Class.ToRuntimeType();
             this.TestMethod = this.TestCase.Method.ToRuntimeMethod();
             this.serviceProvider = serviceProvider;
+
+            if (this.serviceProvider?
+                    .GetService(typeof(IServiceProviderLifetimeFactory))
+                    is IServiceProviderLifetimeFactory factory)
+            {
+                var lifetime = factory.CreateLifetime();
+                this.serviceProvider = lifetime.ServiceProvider;
+                this.scope = lifetime;
+            }
 
             var ctor = this.TestClass.GetConstructors().FirstOrDefault();
             Type[]? parameterTypes;
@@ -118,6 +130,12 @@ namespace Mettle.Sdk
             this.TestMethodArguments = Reflector.ConvertArguments(args, parameterTypes);
         }
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         /// <inheritdoc />
         protected override XunitTestRunner CreateTestRunner(
             ITest test,
@@ -162,6 +180,14 @@ namespace Mettle.Sdk
                 this.CancellationTokenSource);
 
             return runner.RunAsync();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            this.scope?.Dispose();
         }
     }
 }

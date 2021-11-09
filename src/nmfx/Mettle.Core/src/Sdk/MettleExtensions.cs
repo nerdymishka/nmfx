@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Mettle.Sdk
 {
-    public static class DictionaryExtensions
+    public static class MettleExtensions
     {
         public static void Add<TKey, TValue>(
             this IDictionary<TKey, List<TValue>> dictionary,
@@ -31,6 +32,14 @@ namespace Mettle.Sdk
             dictionary[key] = result;
 
             return result;
+        }
+
+        internal static object? GetDefaultValue(this TypeInfo typeInfo)
+        {
+            if (typeInfo.IsValueType)
+                return Activator.CreateInstance(typeInfo.AsType());
+
+            return null;
         }
     }
 }

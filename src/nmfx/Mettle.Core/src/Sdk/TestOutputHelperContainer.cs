@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using Mettle.Abstractions;
 using Xunit.Abstractions;
 
 namespace Mettle.Sdk

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mettle.Sdk
+namespace Mettle.Abstractions
 {
     public interface IExceptionFilter
     {

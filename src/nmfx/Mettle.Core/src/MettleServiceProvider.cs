@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Mettle.Abstractions;
 using Mettle.Sdk;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -26,7 +27,8 @@ namespace Mettle
             this.scopedLifetime = new ScopedLifetime();
             this.factories.TryAdd(typeof(IAssert), _ => AssertImpl.Instance);
             this.factories.TryAdd(typeof(ScopedLifetime), _ => this.scopedLifetime);
-            this.factories.TryAdd(typeof(IScopedServiceProviderLifetime), _ => new SimpleScopedServiceLifetime(this));
+            this.factories.TryAdd(typeof(IServiceProviderLifetimeFactory), _ => new SimpleServiceProviderLifetimeFactory(this));
+            this.factories.TryAdd(typeof(IServiceProviderLifetime), _ => new SimpleServiceProviderLifetime(this));
             this.AddScoped(typeof(ITestOutputHelperContainer), _ => new TestOutputHelperContainer());
             this.AddScoped(typeof(ITestOutputHelper), _ => new TestOutputHelper());
         }
@@ -224,12 +226,27 @@ namespace Mettle
 
 #pragma warning disable S3881
 
-        // this is a private class, so fully implementing IDispose is overkill.
-        private class SimpleScopedServiceLifetime : IScopedServiceProviderLifetime
+        private class SimpleServiceProviderLifetimeFactory : IServiceProviderLifetimeFactory
         {
             private readonly MettleServiceProvider provider;
 
-            public SimpleScopedServiceLifetime(MettleServiceProvider provider)
+            public SimpleServiceProviderLifetimeFactory(MettleServiceProvider provider)
+            {
+                this.provider = provider;
+            }
+
+            public IServiceProviderLifetime CreateLifetime()
+            {
+                return new SimpleServiceProviderLifetime(this.provider);
+            }
+        }
+
+        // this is a private class, so fully implementing IDispose is overkill.
+        private class SimpleServiceProviderLifetime : IServiceProviderLifetime
+        {
+            private readonly MettleServiceProvider provider;
+
+            public SimpleServiceProviderLifetime(MettleServiceProvider provider)
             {
                 var provider2 = new MettleServiceProvider();
                 foreach (var kv in provider.factories)
@@ -243,10 +260,10 @@ namespace Mettle
                     provider2.factories.TryAdd(kv.Key, kv.Value);
                 }
 
-                this.provider = provider;
+                this.provider = provider2;
             }
 
-            public IServiceProvider Provider => this.provider;
+            public IServiceProvider ServiceProvider => this.provider;
 
             /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
             public void Dispose()

@@ -8,7 +8,7 @@ namespace Mettle
 
         internal const string RootNamespace = "Mettle";
 
-        internal const string TestFrameworkDiscoverer = SdkNamespace + ".MettleTestFrameworkTypeDiscoverer";
+        internal const string TestFrameworkTypeDiscoverer = SdkNamespace + ".MettleTestFrameworkTypeDiscoverer";
 
         internal const string TestCaseDiscoverer = SdkNamespace + ".TestDiscoverer";
     }

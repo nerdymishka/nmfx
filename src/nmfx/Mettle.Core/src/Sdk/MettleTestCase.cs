@@ -8,9 +8,8 @@ using Xunit.Sdk;
 namespace Mettle.Sdk
 {
     /// <summary>Wraps another test case that should be skipped.</summary>
-    public sealed class MettleTestCase : XunitTestCase
+    public class MettleTestCase : XunitTestCase
     {
-#pragma warning disable CS0169, RCS1213, RCS1163, S1144, IDE0051, IDE0060
         private readonly IServiceProvider? serviceProvider;
 
         private string? skipReason;
@@ -34,6 +33,21 @@ namespace Mettle.Sdk
         {
             this.skipReason = skipReason;
 
+            this.serviceProvider = serviceProvider;
+
+            var serviceProviderOverride = MettleServiceProviderLocator.GetServiceProvider(this.TestMethod);
+
+            if (serviceProviderOverride != null)
+            {
+                this.serviceProvider = serviceProviderOverride;
+            }
+            else if (this.serviceProvider == null)
+            {
+                serviceProviderOverride = MettleServiceProviderLocator.GetServiceProvider(this.TestMethod.TestClass);
+                if (serviceProviderOverride != null)
+                    this.serviceProvider = serviceProviderOverride;
+            }
+
             if (traits is null)
                 return;
 
@@ -41,17 +55,28 @@ namespace Mettle.Sdk
             {
                 this.Traits.Add(kvp.Key, kvp.Value);
             }
+
+            this.ServiceProvider = this.serviceProvider;
         }
+
+        protected IServiceProvider? ServiceProvider { get; }
 
         public override async Task<RunSummary> RunAsync(IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
             var messageBusInterceptor = new SkippedTestMessageBus(messageBus);
-            RunSummary? result = await base.RunAsync(
-                    diagnosticMessageSink,
-                    messageBusInterceptor,
-                    constructorArguments,
-                    aggregator,
-                    cancellationTokenSource)
+            using var runner = new MettleTestCaseRunner(
+                this.serviceProvider,
+                this,
+                this.DisplayName,
+                this.SkipReason,
+                constructorArguments,
+                this.TestMethodArguments,
+                messageBus,
+                aggregator,
+                cancellationTokenSource);
+
+            var result = await runner
+                .RunAsync()
                 .ConfigureAwait(false);
 
             result.Failed -= messageBusInterceptor.SkippedTestCount;

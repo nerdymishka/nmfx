@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Mettle.Assert\src\NerdyMishka.Mettle.Assert.csproj" />
   </ItemGroup>
 </Project>
