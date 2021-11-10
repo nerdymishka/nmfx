@@ -9,10 +9,10 @@ namespace Mettle
     [AttributeUsage(
          AttributeTargets.Method,
          Inherited = false)]
-    [XunitTestCaseDiscoverer(Util.TestCaseDiscoverer, Util.TestCaseDiscoverer)]
-    public class IntegrationAttribute : TestAttribute
+    [XunitTestCaseDiscoverer(Util.TestCaseDiscoverer, Util.AssemblyName)]
+    public class IntegrationTestAttribute : TestAttribute
     {
-        public IntegrationAttribute()
+        public IntegrationTestAttribute()
             : base("integration")
         {
         }

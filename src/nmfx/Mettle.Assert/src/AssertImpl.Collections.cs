@@ -305,8 +305,7 @@ namespace Mettle
             if (collection is null)
                 throw new ArgumentNullException(nameof(collection));
 
-            var value = default(TValue);
-            if (!collection.TryGetValue(expected, out value))
+            if (!collection.TryGetValue(expected, out var value))
                 throw new ContainsException(expected, collection.Keys);
 
             return value;
@@ -330,8 +329,7 @@ namespace Mettle
             if (collection is null)
                 throw new ArgumentNullException(nameof(collection));
 
-            var value = default(TValue);
-            if (!collection.TryGetValue(expected, out value))
+            if (!collection.TryGetValue(expected, out var value))
                 throw new ContainsException(expected, collection.Keys);
 
             return value;
@@ -646,15 +644,12 @@ namespace Mettle
                         result = item;
             }
 
-            switch (count)
+            return count switch
             {
-                case 0:
-                    throw SingleException.Empty(expectedArgument);
-                case 1:
-                    return result!;
-                default:
-                    throw SingleException.MoreThanOne(count, expectedArgument);
-            }
+                0 => throw SingleException.Empty(expectedArgument),
+                1 => result!,
+                _ => throw SingleException.MoreThanOne(count, expectedArgument),
+            };
         }
     }
 }

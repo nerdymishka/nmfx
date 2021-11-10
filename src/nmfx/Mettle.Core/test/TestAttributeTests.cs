@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Mettle;
 
-namespace NerdyMishka.Mettle.Core.Tests
+[assembly: MettleTestFramework]
+
+namespace Tests
 {
     public class TestAttributeTests
     {
@@ -14,11 +16,25 @@ namespace NerdyMishka.Mettle.Core.Tests
             assert.True("special".Contains("cia"));
         }
 
-        [Test(TicketKind = "Bug")]
-        public void VerifyAttributes()
+        [UnitTest]
+        public void VerifyUnitTestWorks()
         {
             var assert = new AssertImpl();
-            assert.True("bug".Contains("ug"));
+            assert.True("special".Contains("al"));
+        }
+
+        [IntegrationTest]
+        public void VerifyIntegrationTestWorks()
+        {
+            var assert = new AssertImpl();
+            assert.True("special".Contains("sp"));
+        }
+
+        [FunctionalTest]
+        public void VerifyFunctionalTestWorks()
+        {
+            var assert = new AssertImpl();
+            assert.True("special".Contains("ec"));
         }
 
         [Test(TicketKind = "Bug")]

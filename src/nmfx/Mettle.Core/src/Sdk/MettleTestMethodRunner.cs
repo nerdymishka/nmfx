@@ -52,52 +52,25 @@ namespace Mettle.Sdk
         }
 
         /// <inheritdoc />
-        protected override async Task<RunSummary> RunTestCaseAsync(IXunitTestCase testCase)
+        protected override Task<RunSummary> RunTestCaseAsync(IXunitTestCase testCase)
         {
-            if (testCase is ExecutionErrorTestCase)
+            if (testCase is MettleTestCase mettleTestCase)
             {
-                return await testCase.RunAsync(
-                        this.diagnosticMessageSink,
-                        this.MessageBus,
-                        this.constructorArguments,
-                        new ExceptionAggregator(this.Aggregator),
-                        this.CancellationTokenSource)
-                    .ConfigureAwait(false);
-            }
-
-            XunitTestCaseRunner? runner;
-            if (testCase is XunitTheoryTestCase)
-            {
-                runner = new XunitTheoryTestCaseRunner(
-                    testCase,
-                    testCase.DisplayName,
-                    testCase.SkipReason,
-                    this.constructorArguments,
+                return mettleTestCase.RunAsync(
+                    this.serviceProvider,
                     this.diagnosticMessageSink,
                     this.MessageBus,
-                    this.Aggregator,
-                    this.CancellationTokenSource);
-            }
-            else
-            {
-                runner = new MettleTestCaseRunner(
-                    this.serviceProvider,
-                    testCase,
-                    testCase.DisplayName,
-                    testCase.SkipReason,
                     this.constructorArguments,
-                    testCase.TestMethodArguments,
-                    this.MessageBus,
-                    this.Aggregator,
+                    new ExceptionAggregator(this.Aggregator),
                     this.CancellationTokenSource);
             }
 
-            var summary = await runner.RunAsync().ConfigureAwait(false);
-
-            if (runner is IDisposable disposable)
-                disposable.Dispose();
-
-            return summary;
+            return testCase.RunAsync(
+                this.diagnosticMessageSink,
+                this.MessageBus,
+                this.constructorArguments,
+                new ExceptionAggregator(this.Aggregator),
+                this.CancellationTokenSource);
         }
     }
 }

@@ -11,9 +11,9 @@ namespace Mettle
         AttributeTargets.Method,
         Inherited = false)]
     [XunitTestCaseDiscoverer(Util.TestCaseDiscoverer, Util.AssemblyName)]
-    public class UnitAttribute : TestAttribute
+    public class UnitTestAttribute : TestAttribute
     {
-        public UnitAttribute()
+        public UnitTestAttribute()
             : base("unit")
         {
         }

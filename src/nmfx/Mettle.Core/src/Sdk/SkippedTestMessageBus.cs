@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -34,6 +35,7 @@ namespace Mettle.Sdk
                     if (exceptionMessage.Length > DynamicSkipToken.Value.Length)
                     {
                         var skipReason = exceptionMessage.Substring(DynamicSkipToken.Value.Length);
+
                         return this.innerBus.QueueMessage(new TestSkipped(testFailed.Test, skipReason));
                     }
                 }

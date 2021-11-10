@@ -42,7 +42,7 @@ namespace Mettle
         /// <param name="object">The object to be validated.</param>
         /// <exception cref="NotNullException">Thrown when the object is not null.</exception>
         /// <returns>An instance of <see cref="IAssert" /> for fluent chaining.</returns>
-        public IAssert NotNull([NotNull] object @object)
+        public IAssert NotNull([NotNull] object? @object)
         {
             if (@object == null)
                 throw new NotNullException();

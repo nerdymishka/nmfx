@@ -7,7 +7,7 @@ using Xunit.Sdk;
 
 namespace Mettle.Sdk
 {
-    internal class MettleTestFrameworkTypeDiscover : ITestFrameworkTypeDiscoverer
+    public class MettleTestFrameworkTypeDiscoverer : ITestFrameworkTypeDiscoverer
     {
         public Type GetTestFrameworkType(IAttributeInfo attribute)
         {

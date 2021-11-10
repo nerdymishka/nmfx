@@ -5,6 +5,9 @@ using Mettle.Sdk;
 
 namespace Mettle
 {
+    /// <summary>
+    /// The default implementation of <see cref="IAssert"/>.
+    /// </summary>
     public partial class AssertImpl : IAssert
     {
         public static AssertImpl Instance { get; } = new AssertImpl();

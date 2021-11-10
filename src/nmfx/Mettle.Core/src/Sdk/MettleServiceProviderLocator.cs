@@ -10,9 +10,9 @@ namespace Mettle.Sdk
 {
     public static class MettleServiceProviderLocator
     {
-        private static readonly ConcurrentDictionary<Type?, IServiceProvider?> Cache = new();
+        internal static readonly IServiceProvider DefaultServiceProvider = new MettleServiceProvider();
 
-        private static readonly IServiceProvider DefaultServiceProvider = new MettleServiceProvider();
+        private static readonly ConcurrentDictionary<Type?, IServiceProvider?> Cache = new();
 
         public static IServiceProvider? GetServiceProvider(IAssemblyInfo assemblyInfo)
         {
@@ -20,7 +20,7 @@ namespace Mettle.Sdk
             var attribute = attributes.FirstOrDefault();
 
             if (attribute == null)
-                return null;
+                return DefaultServiceProvider;
 
             return GetServiceProvider(attribute);
         }

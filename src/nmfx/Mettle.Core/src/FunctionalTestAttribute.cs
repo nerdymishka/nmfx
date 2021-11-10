@@ -10,12 +10,12 @@ namespace Mettle
          AttributeTargets.Method,
          Inherited = false)]
     [XunitTestCaseDiscoverer(Util.TestCaseDiscoverer, Util.AssemblyName)]
-    public class FunctionalAttribute : TestAttribute
+    public class FunctionalTestAttribute : TestAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionalAttribute"/> class.
+        /// Initializes a new instance of the <see cref="FunctionalTestAttribute"/> class.
         /// </summary>
-        public FunctionalAttribute()
+        public FunctionalTestAttribute()
             : base("functional")
         {
         }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
+using Xunit;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
@@ -10,6 +12,26 @@ namespace Mettle.Sdk
         public TestDiscoverer(IMessageSink diagnosticMessageSink)
             : base(diagnosticMessageSink)
         {
+        }
+
+        public override IEnumerable<IXunitTestCase> Discover(
+            ITestFrameworkDiscoveryOptions discoveryOptions,
+            ITestMethod testMethod,
+            IAttributeInfo factAttribute)
+        {
+            if (factAttribute is ReflectionAttributeInfo reflect && reflect.Attribute is TestAttribute)
+            {
+                IXunitTestCase testCase;
+
+                if (testMethod.Method.IsGenericMethodDefinition)
+                    testCase = this.ErrorTestCase(discoveryOptions, testMethod, "[Fact] methods are not allowed to be generic.");
+                else
+                    testCase = this.CreateTestCase(discoveryOptions, testMethod, factAttribute);
+
+                return new[] { testCase };
+            }
+
+            return base.Discover(discoveryOptions, testMethod, factAttribute);
         }
 
         protected override IXunitTestCase CreateTestCase(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
@@ -82,5 +104,16 @@ namespace Mettle.Sdk
 
             return test;
         }
+
+        private ExecutionErrorTestCase ErrorTestCase(
+            ITestFrameworkDiscoveryOptions discoveryOptions,
+            ITestMethod testMethod,
+            string message) =>
+            new(
+                this.DiagnosticMessageSink,
+                discoveryOptions.MethodDisplayOrDefault(),
+                discoveryOptions.MethodDisplayOptionsOrDefault(),
+                testMethod,
+                message);
     }
 }

@@ -71,7 +71,7 @@ namespace Mettle.Sdk
             Type[]? parameterTypes;
             object?[]? args;
 
-            ParameterInfo[]? parameters = null;
+            ParameterInfo[]? parameters;
             if (constructorArguments.Length > 0)
             {
                 parameters = ctor?.GetParameters() ?? Array.Empty<ParameterInfo>();
@@ -97,6 +97,7 @@ namespace Mettle.Sdk
                 this.ConstructorArguments = constructorArguments;
             }
 
+            parameters = this.TestMethod.GetParameters();
             parameterTypes = new Type[parameters?.Length ?? 0];
             args = testMethodArguments ?? Array.Empty<object>();
             if (parameters != null && parameters.Length != args.Length)

@@ -77,6 +77,8 @@ namespace Mettle.Sdk
             {
                 this.ConstructorArguments = constructorArguments;
             }
+
+            this.MessageBus = new SkippedTestMessageBus(this.MessageBus);
         }
 
         public void Dispose()

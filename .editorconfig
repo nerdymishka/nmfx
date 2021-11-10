@@ -44,15 +44,16 @@ dotnet_diagnostic.CS1591.severity = none
 dotnet_diagnostic.SA1503.severity = none 
 dotnet_diagnostic.S1135.severity = none
 dotnet_diagnostic.SA1311.severity = none
-dotnet_diagnostic.SA1601.severity = suggestion
+dotnet_diagnostic.SA1601.severity = none
 dotnet_diagnostic.SA1108.severity = suggestion
 dotnet_diagnostic.SA1602.severity = none
 dotnet_diagnostic.RCS1135.severity = none
 dotnet_diagnostic.S4070.severity = none
 dotnet_diagnostic.S3903.severity = none # namespaces in .net 6 differ
 dotnet_diagnostic.S125.severity = suggestion # commenting out code is benefitial
-dotnet_diagnostic.S3267.severity = suggestion
+dotnet_diagnostic.S3267.severity = none
 dotnet_diagnostic.CA1704.severity = none
+dotnet_diagnostic.IDE0057.severity = none
 
 [*.{xml,build.props,build.targets,csproj}]
 indent_size = 2

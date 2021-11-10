@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit.Abstractions;
@@ -10,7 +11,7 @@ namespace Mettle.Sdk
     /// <summary>Wraps another test case that should be skipped.</summary>
     public class MettleTestCase : XunitTestCase
     {
-        private readonly IServiceProvider? serviceProvider;
+        private IServiceProvider? serviceProvider;
 
         private string? skipReason;
 
@@ -32,7 +33,6 @@ namespace Mettle.Sdk
             : base(diagnosticMessageSink, defaultMethodDisplay, defaultMethodDisplayOptions, testMethod, testMethodArguments)
         {
             this.skipReason = skipReason;
-
             this.serviceProvider = serviceProvider;
 
             var serviceProviderOverride = MettleServiceProviderLocator.GetServiceProvider(this.TestMethod);
@@ -61,7 +61,39 @@ namespace Mettle.Sdk
 
         protected IServiceProvider? ServiceProvider { get; }
 
-        public override async Task<RunSummary> RunAsync(IMessageSink diagnosticMessageSink, IMessageBus messageBus, object[] constructorArguments, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
+        public Task<RunSummary> RunAsync(
+            IServiceProvider? serviceProvider,
+            IMessageSink diagnosticMessageSink,
+            IMessageBus messageBus,
+            object?[] constructorArguments,
+            ExceptionAggregator aggregator,
+            CancellationTokenSource cancellationTokenSource)
+        {
+            this.serviceProvider = serviceProvider;
+            var serviceProviderOverride = MettleServiceProviderLocator.GetServiceProvider(this.TestMethod);
+
+            if (serviceProviderOverride != null)
+            {
+                this.serviceProvider = serviceProviderOverride;
+            }
+            else if (this.serviceProvider == null)
+            {
+                serviceProviderOverride = MettleServiceProviderLocator.GetServiceProvider(this.TestMethod.TestClass);
+                if (serviceProviderOverride != null)
+                    this.serviceProvider = serviceProviderOverride;
+            }
+
+            this.serviceProvider ??= MettleServiceProviderLocator.DefaultServiceProvider;
+
+            return this.RunAsync(
+                diagnosticMessageSink,
+                messageBus,
+                constructorArguments,
+                aggregator,
+                cancellationTokenSource);
+        }
+
+        public override async Task<RunSummary> RunAsync(IMessageSink diagnosticMessageSink, IMessageBus messageBus, object?[] constructorArguments, ExceptionAggregator aggregator, CancellationTokenSource cancellationTokenSource)
         {
             var messageBusInterceptor = new SkippedTestMessageBus(messageBus);
             using var runner = new MettleTestCaseRunner(
@@ -71,7 +103,7 @@ namespace Mettle.Sdk
                 this.SkipReason,
                 constructorArguments,
                 this.TestMethodArguments,
-                messageBus,
+                messageBusInterceptor,
                 aggregator,
                 cancellationTokenSource);
 
@@ -89,12 +121,26 @@ namespace Mettle.Sdk
         {
             base.Deserialize(data);
             this.skipReason = data.GetValue<string>(nameof(this.skipReason));
+
+            var keys = data.GetValue<string[]>("traitNames");
+
+            foreach (var key in keys)
+            {
+                var values = data.GetValue<string[]>(key);
+                this.Traits.Add(key, new List<string>(values));
+            }
         }
 
         public override void Serialize(IXunitSerializationInfo data)
         {
             base.Serialize(data);
             data.AddValue(nameof(this.skipReason), this.skipReason);
+
+            data.AddValue("traitNames", this.Traits.Keys.ToArray());
+            foreach (var trait in this.Traits.Keys)
+            {
+                data.AddValue(trait, this.Traits[trait].ToArray());
+            }
         }
 
         protected override string GetSkipReason(IAttributeInfo factAttribute)
