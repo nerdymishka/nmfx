@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>$(DotNetTestFrameworks)</TargetFrameworks>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
