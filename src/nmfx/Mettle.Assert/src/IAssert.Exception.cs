@@ -19,7 +19,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit.Sdk;
 
-namespace Mettle.Sdk
+namespace Mettle
 {
     public partial interface IAssert
     {

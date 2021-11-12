@@ -19,4 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mettle.Core\src\NerdyMishka.Mettle.Core.csproj" />
+    <ProjectReference Include="..\src\NerdyMishka.Core.csproj" />
+  </ItemGroup>
+
 </Project>
