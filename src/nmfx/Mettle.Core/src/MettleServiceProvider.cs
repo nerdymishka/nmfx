@@ -224,8 +224,6 @@ namespace Mettle
             }
         }
 
-#pragma warning disable S3881
-
         private class SimpleServiceProviderLifetimeFactory : IServiceProviderLifetimeFactory
         {
             private readonly MettleServiceProvider provider;

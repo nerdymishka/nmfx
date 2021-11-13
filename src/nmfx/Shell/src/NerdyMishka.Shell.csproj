@@ -3,11 +3,15 @@
   <PropertyGroup>
     <TargetFrameworks>$(DotNetLibraryFrameworks)</TargetFrameworks>
     <Nullable>enable</Nullable>
-    <RootNamespace>NerdyMishka</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Include="..\..\Internal\src\System\Diagnostics\CodeAnalysis\NullableAttributes.cs" Link="NullableAttributes.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Humanizer.Core" Version="2.11.10" />
+    <PackageReference Include="MedallionShell" Version="1.6.2" />
   </ItemGroup>
 
 </Project>

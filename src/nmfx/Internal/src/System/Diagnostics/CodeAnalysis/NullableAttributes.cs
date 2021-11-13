@@ -1,13 +1,6 @@
 #if NETSTANDARD2_0 || NETFRAMEWORK || NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP2_2
 
-#pragma warning disable SA1642
-#pragma warning disable SA1028
-#pragma warning disable SA1507
-#pragma warning disable SA1502
-#pragma warning disable SA1003
-#pragma warning disable SA1623
-#pragma warning disable SA1649
-#pragma warning disable SA1505
+#pragma warning disable SA1642, SA1028, SA1507, SA1502, SA1003, SA1623, SA1649, SA1505, RCS1222, RCS1037
 
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
@@ -25,7 +18,7 @@ namespace System.Diagnostics.CodeAnalysis
     /// <summary>Specifies that an output may be null even if the corresponding type disallows it.</summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, Inherited = false)]
     internal sealed class MaybeNullAttribute : Attribute { }
- 
+
     /// <summary>Specifies that an output will not be null even if the corresponding type allows it. Specifies that an input argument was not null when the call returns.</summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, Inherited = false)]
     internal sealed class NotNullAttribute : Attribute { }

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
 
-namespace NerdyMishka.Core
+namespace NerdyMishka
 {
     public static class Check
     {

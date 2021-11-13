@@ -54,6 +54,7 @@ dotnet_diagnostic.S125.severity = suggestion # commenting out code is benefitial
 dotnet_diagnostic.S3267.severity = none
 dotnet_diagnostic.CA1704.severity = none
 dotnet_diagnostic.IDE0057.severity = none
+dotnet_diagnostic.S3881.severity = none
 
 [*.{xml,build.props,build.targets,csproj}]
 indent_size = 2
