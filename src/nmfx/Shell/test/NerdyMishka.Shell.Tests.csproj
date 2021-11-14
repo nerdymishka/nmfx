@@ -4,6 +4,7 @@
     <TargetFrameworks>$(DotNetTestFrameworks)</TargetFrameworks>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <RootNamespace>Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Mettle.Core\src\NerdyMishka.Mettle.Core.csproj" />
+    <ProjectReference Include="..\src\NerdyMishka.Shell.csproj" />
   </ItemGroup>
 
 </Project>

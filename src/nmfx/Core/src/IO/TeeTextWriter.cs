@@ -340,7 +340,7 @@ namespace NerdyMishka.IO
 
         public override string ToString()
         {
-            if (this.writer is StreamWriter sw)
+            if (this.writer is StringWriter sw)
                 return sw.ToString();
 
             return base.ToString();
